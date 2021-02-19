@@ -50,3 +50,34 @@ WHERE tconst=152930 ;
 requ11.sql
 #11.Quelles sont les noms et rôles (category et job) des personnes intervenant dans la production du film Return of the Jedi ?
 ;
+
+requ12.sql
+#12.Quels sont les titres des films notés plus de 9 sur 10 avec plus de 10 000 votes ?
+SELECT primaryTitle,numVotes,averageRating
+FROM title_ratings
+JOIN title_basics ON title_ratings.tconst = title_basics.tconst
+WHERE averageRating>=9 AND numVotes>=10000;
+
+requ13.sql
+#13.Quelle sont les 5 comédies romantiques les mieux notées ?
+SELECT numVotes,primaryTitle,genres
+FROM title_ratings
+JOIN title_basics ON title_ratings.tconst = title_basics.tconst
+WHERE genres='Romance'
+ORDER BY numVotes DESC 
+LIMIT 5;
+
+requ14.sql
+#14.Quels sont les 10 films d’animation ayant reçu plus de 1000 votes les mieux notés ?
+SELECT numVotes,primaryTitle,genres
+FROM title_ratings
+JOIN title_basics ON title_ratings.tconst = title_basics.tconst
+WHERE genres='Animation' AND numVotes>1000
+ORDER BY numVotes DESC 
+LIMIT 10;
+
+requ15.sql
+#15.Combien de films durent plus de 3 heures ?
+SELECT COUNT(primaryTitle)
+FROM title_basics
+WHERE runtimeMinutes>=180;

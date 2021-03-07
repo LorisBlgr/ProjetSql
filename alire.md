@@ -47,9 +47,13 @@ JOIN title_basics ON title_ratings.tconst = title_basics.tconst;
 
 requ9.sql
 #09.Qui a écrit le scénario du film Taxi sorti en 1998 ?
-SELECT writers
-FROM title_writers
-WHERE tconst=152930 ;
+SELECT primaryName 
+FROM name_basics 
+WHERE primaryProfession LIKE '%writer%' AND nconst 
+IN (SELECT writers FROM title_writers WHERE tconst 
+IN(SELECT tconst 
+FROM title_basics 
+WHERE primaryTitle='Taxi' AND startYear=1998));
 
 requ10.sql
 #10.Quelles sont les noms et rôles (category et job) des personnes intervenant dans la production du film Return of the Jedi ?

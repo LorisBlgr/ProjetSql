@@ -1,6 +1,6 @@
 from tkinter import * #on importe l'ensemble du module tkinter
 from tkinter import ttk #on importe ttk du module tkinter
-from prettytable import PrettyTable #on importe PrettyTable du module prettytalbe
+from prettytable import PrettyTable #on importe PrettyTable du module prettytable
 import sqlite3 #on importe le module sqlite3
 import os #on importe le module os
 

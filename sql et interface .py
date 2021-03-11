@@ -61,162 +61,182 @@ def ClearCmd():
     clear()
 
 # Fonction d'execution des requête:
-
+#on va devoir créer plusieurs variables différentes pour les résultats en tableaux ASCII car si on en créer qu'une tous les résultats apparaîtront dans le même tableau, ce que nous ne voulons pas.
 TableAscii=PrettyTable()#on créer une variable tableAscii avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
-
-def sql1():#fonction représentant la requête n°3
+def sql1():#fonction représentant la requête n°1
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req1["Quels sont les différents types de titres dans cette base de données ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
         TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
     print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql2():#fonction représentant la requête n°3
+TableAscii1=PrettyTable()#on créer une variable tableAscii1 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql2():#fonction représentant la requête n°2
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req2["Combien y a-t-il de titres dans cette base de données ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii1.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii1)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql3():#fonction représentant la requête n°4
+TableAscii2=PrettyTable()#on créer une variable tableAscii2 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql3():#fonction représentant la requête n°3
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req3["En quelle année est sortie le film The Godfather ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii2.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii2)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql4():#fonction représentant la requête n°5
+TableAscii3=PrettyTable()#on créer une variable tableAscii3 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql4():#fonction représentant la requête n°4
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req4["En quelle année est sortie le premier film Superman ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii3.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii3)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql5():#fonction représentant la requête n°6
+TableAscii4=PrettyTable()#on créer une variable tableAscii4 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql5():#fonction représentant la requête n°5
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req5["Quel est le titre original du film 'Les dents de la mer' ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii4.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii4)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql6():#fonction représentant la requête n°7
+TableAscii5=PrettyTable()#on créer une variable tableAscii5 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql6():#fonction représentant la requête n°6
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req6["Quel est le métier d’Olivier Nakache ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii5.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii5)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql7():#fonction représentant la requête n°8
+TableAscii6=PrettyTable()#on créer une variable tableAscii6 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql7():#fonction représentant la requête n°7
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req7["Quels sont les films d’Olivier Nakache ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii6.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii6)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql8():#fonction représentant la requête n°9
+TableAscii7=PrettyTable()#on créer une variable tableAscii7 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql8():#fonction représentant la requête n°8
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req8["Quel est le film ayant recueilli le plus de votes ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii7.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii7)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql9():#fonction représentant la requête n°10
+TableAscii8=PrettyTable()#on créer une variable tableAscii8 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql9():#fonction représentant la requête n°9
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req9["Qui a écrit le scénario du film Taxi sorti en 1998 ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii8.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii8)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
 """
-def sql10():#fonction représentant la requête n°11
+
+TableAscii9=PrettyTable()#on créer une variable tableAscii9 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql10():#fonction représentant la requête n°10
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req10[""])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii9.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii9)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 """
 
-def sql11():#fonction représentant la requête n°12
+TableAscii10=PrettyTable()#on créer une variable tableAscii10 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql11():#fonction représentant la requête n°11
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req11["Quels sont les titres des films notés plus de 9 sur 10 avec plus de 10 000 votes ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii10.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii10)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql12():#fonction représentant la requête n°13
+TableAscii11=PrettyTable()#on créer une variable tableAscii11 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql12():#fonction représentant la requête n°12
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req12["Quelle sont les 5 comédies romantiques les mieux notées ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii11.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii11)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql13():#fonction représentant la requête n°14
+TableAscii12=PrettyTable()#on créer une variable tableAscii12 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql13():#fonction représentant la requête n°13
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req13["Quels sont les 10 films d’animation ayant reçu plus de 1000 votes les mieux notés ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii12.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii12)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql14():#fonction représentant la requête n°15
+TableAscii13=PrettyTable()#on créer une variable tableAscii13 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql14():#fonction représentant la requête n°14
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req14["Combien de films durent plus de 3 heures ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii13.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii13)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql15():#fonction représentant la requête n°16
+TableAscii14=PrettyTable()#on créer une variable tableAscii14 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql15():#fonction représentant la requête n°15
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req15["Quelle est la durée moyenne d’un film ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii14.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii14)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql16():#fonction représentant la requête n°17
+TableAscii15=PrettyTable()#on créer une variable tableAscii15 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql16():#fonction représentant la requête n°16
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req16["Quel est le film le plus long ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii15.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii15)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql17():#fonction représentant la requête n°18
+TableAscii16=PrettyTable()#on créer une variable tableAscii16 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql17():#fonction représentant la requête n°17
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req17["Quels sont les 5 films les plus longs ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii16.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii16)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
+TableAscii17=PrettyTable()#on créer une variable tableAscii17 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
 def sql18():#fonction représentant la requête n°18
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req18["Quels sont les titres des films les plus connus de Sean Connery ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii17.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii17)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql19():#fonction représentant la requête n°18
+TableAscii18=PrettyTable()#on créer une variable tableAscii18 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql19():#fonction représentant la requête n°19
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req19["Quels sont les acteurs ayant joué le rôle de James Bond, et dans quels films ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii18.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii18)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql20():#fonction représentant la requête
+TableAscii19=PrettyTable()#on créer une variable tableAscii19 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql20():#fonction représentant la requête n°20
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req20["Quel sont les réalisateurs ayant fait les cinq film les mieux notés ? Indiquer les noms des films correspondants."])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii19.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii19)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
-def sql21():#fonction représentant la requête n°18
+TableAscii20=PrettyTable()#on créer une variable tableAscii20 avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+def sql21():#fonction représentant la requête n°21
     ClearCmd()#on utilise la fonction ClearCmd qui va permettre d'effacer les résultat précédent pour afficher celui actuel
     c.execute(req21["Quels sont les noms des épisodes de Game of Thrones ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    print(TableAscii)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
+        TableAscii20.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    print(TableAscii20)#on affiche le résultat de la requete dans un tableau ASCII grâce a prettytable
 
 #on créer la fonction afficher qui nous permet de créer l'interface avec tkinter
 def afficher():
     root = Tk() #on créer la racine de l'affichage tkinter
-    root.geometry("1200x600")#on défini la taille de la page
+    root.geometry("1000x600")#on défini la taille de la page
     #on créer la fenêtre principal
     fenetre1=Frame(root)#on créer une variable fenetre1 avec comme valeur une fenetre
     fenetre1.pack(side=TOP,fill=BOTH,expand=1) #On défini la position du widget fill="both" remplir à la fois horizontalement et verticalement tout espace supplémentaire qui lui est alloué par le parent. Et enfin expand=True fait que le widget utilise tout espace non utilisé.
@@ -231,7 +251,7 @@ def afficher():
     scrollbarVertical=ttk.Scrollbar(fenetre1, orient=VERTICAL, command=canvas1.yview)#on créer une variable scrollbarVertical avec comme valeur la fenetre1, avec comme orientation vertical pour défiler la page de haute en bas, avec comme commande l'axe y du cavas1
     scrollbarVertical.pack(side=RIGHT, fill=Y)#on pack notre scrollbar pour l'afficher sur la page.
 
-    #configure canvas
+    #configurer canvas
     canvas1.configure(yscrollcommand=scrollbarVertical.set)
     canvas1.bind('<Configure>', lambda e: canvas1.configure(scrollregion=canvas1.bbox("all")))
 
@@ -288,7 +308,6 @@ def afficher():
     boutton20.pack(pady=10)
     boutton21.pack(pady=10)
 
-
-
     root.mainloop() #permet de lancer tout les événement de la page, soit la démarrer.
+
 afficher()#on appel la fonction affichage pour l'executer.

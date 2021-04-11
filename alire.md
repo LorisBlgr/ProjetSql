@@ -47,17 +47,18 @@ JOIN title_basics ON title_ratings.tconst = title_basics.tconst;
 
 requ9.sql
 #09.Qui a écrit le scénario du film Taxi sorti en 1998 ?
-SELECT primaryName 
-FROM name_basics 
-WHERE primaryProfession LIKE '%writer%' AND nconst 
-IN (SELECT writers FROM title_writers WHERE tconst 
-IN(SELECT tconst 
-FROM title_basics 
-WHERE primaryTitle='Taxi' AND startYear=1998));
+SELECT writers
+FROM title_writers
+WHERE tconst=152930 ;
 
 requ10.sql
 #10.Quelles sont les noms et rôles (category et job) des personnes intervenant dans la production du film Return of the Jedi ?
-;
+SELECT primaryName,primaryProfession,originalTitle
+FROM title_basics
+JOIN name_titles ON knownForTitles = tconst
+JOIN name_basics ON name_basics.nconst = name_titles.nconst
+AND originalTitle="Star Wars: Episode VI - Return of the Jedi"
+AND titleType = "movie";
 
 requ11.sql
 #11.Quels sont les titres des films notés plus de 9 sur 10 avec plus de 10 000 votes ?

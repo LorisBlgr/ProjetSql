@@ -1,4 +1,5 @@
 #!"F:\Winpython\WPy64-3850\python-3.8.5.amd64\python.exe"
+#Sur la ligne ci-dessus il faut mettre le chemin de l'interpréteur python pour que les requêtes puissent s'executer.
 
 """
 Info: Cette requête utilise beaucoup de ressource et créer une erreur: "Internal Server Error" qui n'affiche pas la réponse sur la page web, cependant la reqûete est fonctionnelle.

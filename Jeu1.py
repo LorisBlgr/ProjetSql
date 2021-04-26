@@ -24,7 +24,7 @@ class Personnage(pygame.sprite.Sprite):
             scale: int de la taille du joueur
         """
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('images/personnages/personnage.png')                                                #importation du personnage.
+        img = pygame.image.load('images/personnages/personnage.png')                                        #importation du personnage.
         self.image = pygame.transform.scale(img, (int(img.get_width()*scale), int(img.get_height()*scale))) #on agrandit l'image du joueur.
         self.rect = self.image.get_rect()                                                                   #création d'un réctangle autour du jouer pour permettre d'appliquer les collisions/mouvement etc.
         self.rect.center = (x,y)                                                                            #on positionne le réctangle sur les coordonée x et y.

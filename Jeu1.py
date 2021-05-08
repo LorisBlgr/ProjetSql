@@ -207,7 +207,7 @@ while run: #Boucle contenant les différent événement de la fenêter pendant q
                 bouger_gauche = False
             if event.key == pygame.K_d:      #quand la touche d est appuyé.
                 bouger_droite = False
-            if event.key == pygame.K_SPACE and joueur.vivant:   #quand la touche w est appuyé et si le joueur est vivant.
+            if event.key == pygame.K_SPACE and joueur.vivant:   #quand la touche espace est appuyé et si le joueur est vivant.
                 joueur.saut = True         
             if event.key == pygame.K_ESCAPE: #quand échape est appuyé.
                 run = False

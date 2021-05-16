@@ -23,6 +23,12 @@ GRAVITE = 0.75                     #création de gravité pour permettre au joue
 #variables de mouvements du joueur:
 bouger_gauche = False
 bouger_droite = False
+frapper = False
+
+#mportation des images:
+#projectile
+projectile_img= pygame.image.load('images/icons/vent.png').convert_alpha()
+
 
 #couleurs:
 BG = (0)        #couleurs d'arrière plan.
@@ -36,7 +42,7 @@ def draw_bg():
 
 #Classe permettant de créer de spersonnages:
 class Personnage(pygame.sprite.Sprite):
-    def __init__(self,char_type,x,y,scale,speed):
+    def __init__(self,char_type,x,y,scale,speed,stamina):
         """
         méthode d'initialisation de la classe.
         Arguments: 
@@ -49,6 +55,11 @@ class Personnage(pygame.sprite.Sprite):
         self.vivant = True                                                                                  #variable qui vérifie que le personnage est vivant.
         self.char_type = char_type                                                                          #type de personnage qui va permettre de faire des animations pendants les mouvements.
         self.speed = speed                                                                                  #vitesse de mouvement du joueur.
+        self.stamina = stamina                                                                              #création d'une variable de stamina mais qui va varier.                                                           
+        self.start_stamina = stamina                                                                        #variable qui ajoute de la stamina au jouer, variable de base.
+        self.frapper_cd = 0                                                                                 #création d'un temps de récupération (cooldown).
+        self.PV = 100                                                                                       #création de point de vie des personnages qui va varier avec les dégats etc.
+        self.PV_max = self.PV                                                                               #variable point de vie de base                        
         self.direction = 1                                                                                  #direction du personnage.
         self.mvt_y = 0                                                                                      #variable de mouvement vertical.
         self.saut = False                                                                                   #variable qui vérifie que le joueur saute.
@@ -57,17 +68,16 @@ class Personnage(pygame.sprite.Sprite):
         self.animation_list = []                                                                            #création d'une liste qui accueilleras les animations du personnage
         self.frame_index = 0                                                                                #repère de frame d'animation.
         self.action = 0                                                                                     #variable qui permet d'accéder aux différente animation par exemple 1 pour courir.
-        self.update_delay = pygame.time.get_ticks()                                                         #dalai à laquelle se rafraichi l'animation
-        
+        self.update_delay = pygame.time.get_ticks()                                                         #délai à laquelle se rafraichi l'animation
         #importation des images du personnage:
-        animation_types = ['Immobile', 'Courir', 'Sauter']
-        for animation in animation_types:    
+        animation_types = ['Immobile', 'Courir', 'Sauter','Mort']
+        for animation in animation_types:
             #réinitialise la liste temporaire des images:
             temp_list=[]                                                                                        #liste temporaire dans laquel vont être stocké les animations pour éviter qu'elle s'accumulent l'une après les autres dans "animation_list".
             #compte le nombre d'image dans le dossier:
             nombre_images = len(os.listdir(f'images/{self.char_type}/{animation}'))                             #créer une liste de tout les élément du répertoire.
             for i in range (nombre_images):
-                img = pygame.image.load(f'images/{self.char_type}/{animation}/{i}.png')                                     
+                img = pygame.image.load(f'images/{self.char_type}/{animation}/{i}.png').convert_alpha()                                     
                 img = pygame.transform.scale(img, (int(img.get_width()*scale), int(img.get_height()*scale)))    #on agrandit l'image du joueur.
                 temp_list.append(img)                                                                           #on ajoute les animations à la fin de la liste animation_list.
             self.animation_list.append(temp_list)
@@ -77,6 +87,15 @@ class Personnage(pygame.sprite.Sprite):
         self.rect.center = (x,y)                                                                            #on positionne le réctangle sur les coordonée x et y.
 
     
+
+    def update(self):
+        self.rafraichissement_animation()
+        self.check_vivant()
+        #update cooldown:
+        if self.frapper_cd > 0:
+            self.frapper_cd -= 1
+
+
     def bouger(self,bouger_gauche,bouger_droite):
         """
         méthode qui permet au joueur de pouvoir bouger
@@ -121,6 +140,23 @@ class Personnage(pygame.sprite.Sprite):
         self.rect.y += dy                       #mouvement du rectangles sur l'axe y.
 
 
+
+    def frapper(self):
+        """
+        Méthode qui permet au joueur de frapper
+        Arguments:
+            self
+        """ 
+        #permet d'attendre une certains temps avant de pouvoir récrer un projectile pour éviter d'en avoir en boucle:
+        if self.frapper_cd == 0 and self.stamina > 0:        
+            self.frapper_cd = 20
+            projectile = Projectile(self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery*0.8, self.direction)   #créer un instance projectile centrer sur le rectangle du joueur.
+            projectile_group.add(projectile)    #ajoute l'instance projectile au groupe
+            #reduction de la stamina:
+            self.stamina -= 1
+
+
+
     def rafraichissement_animation(self):
         """
         Méthode qui met à jour l'animation du joueur.
@@ -135,8 +171,11 @@ class Personnage(pygame.sprite.Sprite):
             self.frame_index += 1
         
         #si l'animation est finie elle reviens au début:
-        if self.frame_index >= len(self.animation_list[self.action]):                             
-            self.frame_index = 0
+        if self.frame_index >= len(self.animation_list[self.action]):     
+            if self.action == 3:                        
+                self.frame_index = len(self.animation_list[self.action]) - 1
+            else:
+                self.frame_index = 0
 
         
 
@@ -155,6 +194,19 @@ class Personnage(pygame.sprite.Sprite):
             self.update_delay = pygame.time.get_ticks()
 
 
+    def check_vivant(self):
+        """
+        méthode qui vérifie si le joueur est vivant.
+        Arguments:
+            self
+        """       
+        if self.PV <=0: 
+            self.PV = 0
+            self.speed = 0
+            self.vivant = False
+            self.update_action(3)  #joue l'animation de mort.
+
+
     def apparition(self):
         """
         méthode qui affiche le joueur dans la fenêtre.
@@ -164,8 +216,45 @@ class Personnage(pygame.sprite.Sprite):
         fenetre.blit(pygame.transform.flip(self.image, self.flip, False), self.rect) 
 
 
+
+#création d'une classe projectile pour l'attaque:
+class Projectile(pygame.sprite.Sprite):
+    def __init__(self, x, y, direction):
+        pygame.sprite.Sprite.__init__(self)
+        self.speed = 10                        #variable de la vitesse du projectile.
+        self.image = projectile_img            #image du projectile.
+        self.rect = self.image.get_rect()      #création d'un réctangle autour du projectile pour permettre d'appliquer les collisions/mouvement etc.
+        self.rect.center = (x, y)              #position du rectangle.
+        self.direction = direction             #direction du projectile.
+        self.flip = False
+        
+    def update(self):
+        #faire bouger le projectile:
+        self.rect.x += (self.direction * self.speed)
+        #vérifie si le projectile à quitter l'écran:
+        if self.rect.right < 0 or self.rect.left > Largeur_fenetre:
+            self.kill()
+
+        #vérifie les collisions entre les personnages:
+        if pygame.sprite.spritecollide(joueur, projectile_group, False):
+            if joueur.vivant:
+                joueur.PV -= 5
+                self.kill()   #supprime le projectiles.
+        if pygame.sprite.spritecollide(ennemi, projectile_group, False):
+            if ennemi.vivant:
+                ennemi.PV -= 25
+                self.kill()   #supprime le projectiles.
+        
+
+
+#création d'un groupe de sprites:
+projectile_group = pygame.sprite.Group()
+
+
+
 #création du joueur:
-joueur = Personnage('personnages',200,200,3/2,5)
+joueur = Personnage('personnages',200,200,3/2,5,20)
+ennemi = Personnage('ennemies',400,200,3/2,5,20)
 
 
 run = True
@@ -175,21 +264,32 @@ while run: #Boucle contenant les différent événement de la fenêter pendant q
 
     draw_bg()
 
-    joueur.rafraichissement_animation()
+    joueur.update()
     joueur.apparition()
+    
+    ennemi.update()
+    ennemi.apparition()
+
+    #update et groupes de dessin:
+    projectile_group.update()
+    projectile_group.draw(fenetre)
+
 
 
     #met à jour les actions du joueur:
     if joueur.vivant:
+        #pour frapper:
+        if frapper:
+            joueur.frapper()
         #pour sauter:
         if joueur.in_air:
             joueur.update_action(2)         #2=sauter.
-        #pour bouger:
         elif bouger_gauche or bouger_droite:
             joueur.update_action(1)         #1=courir.
         else:
             joueur.update_action(0)         #0=immobile.
         joueur.bouger(bouger_gauche,bouger_droite)
+
 
     for event in pygame.event.get():  #Boucle qui parcourt les différent evénement de la fenêtre.
         #Commande permettant de quitter la fenêtre:
@@ -201,16 +301,23 @@ while run: #Boucle contenant les différent événement de la fenêter pendant q
                 bouger_gauche = True
             if event.key == pygame.K_d:   #quand la touche d est appuyé.
                 bouger_droite = True
-        #touches n'est plus appuyé:
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_q:      #quand la touche a est appuyé.
-                bouger_gauche = False
-            if event.key == pygame.K_d:      #quand la touche d est appuyé.
-                bouger_droite = False
+            if event.key == pygame.K_r:   #quand la touche r est appuyé.
+                frapper = True
             if event.key == pygame.K_SPACE and joueur.vivant:   #quand la touche espace est appuyé et si le joueur est vivant.
                 joueur.saut = True         
-            if event.key == pygame.K_ESCAPE: #quand échape est appuyé.
+            if event.key == pygame.K_ESCAPE:    #quand échape est appuyé.
                 run = False
+
+        
+        #touches n'est plus appuyé:
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_q:      #quand la touche a est relaché.
+                bouger_gauche = False
+            if event.key == pygame.K_d:      #quand la touche d est relaché.
+                bouger_droite = False
+            if event.key == pygame.K_r:      #quand la touche r est relaché.
+                frapper = False
+
 
 
     pygame.display.update() #Afficher le joueur à l'écran.

@@ -56,29 +56,6 @@ with open('requêtes/req1.sql') as query1, \
     query21.close()#permet de fermer le fichier ouvert une fois que l'on en avons plus besoin.
 
 
-def pretty_print(list, ligne="-", trait="|", angles="+"):
-    """
-    Fonction permettant de transformer une liste de liste en tableau.
-    Arguments: 
-        liste: la liste à mettre sous forme de tableau.
-        ligne: charactère "-" pour délimiter les lignes du tableau.
-        trait: charactère "|" pour délimiter les colonnes du tableau.
-        angles: charactère "+" pour faire les angles du tableau.
-    """
-    #Si la liste est vide renvoie None.
-    if len(list) == 0:
-        return
-    #détermine la longueur max de la liste:
-    longueur_max = [
-        max(colonnes)for colonnes in zip(*[[len(cell) for cell in row] for row in list])]
-    #affiche les lignes et colonnes en fonction de la taille de la liste:
-    for i in list:
-        print(angles.join(["", *[ligne * l for l in longueur_max], ""]))
-        print(trait.join(["", *[("{:<" + str(l) + "}").format(c)for l, c in zip(longueur_max, i)],"",]))
-    print(angles.join(["", *[ligne * l for l in longueur_max], ""]))
-
-
-
 # Fonction d'execution des requête:
 #on va devoir créer plusieurs variables différentes pour les résultats en tableaux ASCII car si on en créer qu'une tous les résultats apparaîtront dans le même tableau, ce que nous ne voulons pas.
 TableAscii=[]

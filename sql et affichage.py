@@ -9,7 +9,7 @@ c = conn.cursor()#permettra plus tard d'effectuer les requêtes SQL.
 
 #on créer des variable nommé query qui ouvre les fichier sql correspondant au requête sql de 1 à 21, pour ce faire on utilise la command with open qui permet d'en ouvrir plusieurs, et a aussi l'avantage de fermer
 # automatiquement les fichier une fois que l'on en a plus besoin.
-with open('requêtes/req1.sql') as query1, \
+with open('C:/Users/Elève/Documents/projetsql/requetes/requêtes/req1.sql') as query1, \
         open('requêtes/req2.sql') as query2, \
             open('requêtes/req3.sql') as query3, \
                 open('requêtes/req4.sql') as query4, \
@@ -39,9 +39,9 @@ with open('requêtes/req1.sql') as query1, \
     req5={"Quel est le titre original du film 'Les dents de la mer' ?": query5.read()} #requête n°5
     req6={"Quel est le métier d’Olivier Nakache ?": query6.read()} #requête n°6
     req7={"Quels sont les films d’Olivier Nakache ?": query7.read()} #requête n°7
-    req8={"Quel est le film ayant recueilli le plus de votes ?": query8.read()} #requête n°8
+    req8={"Quel est le film ayant recueilli le plus de votes ?":query8.read()} #requête n°8
     req9={"Qui a écrit le scénario du film Taxi sorti en 1998 ?": query9.read()} #requête n°9
-    req10={"Quelles sont les noms et rôles (category et job) des personnes intervenant dans la production du film Return of the Jedi ?": query10.read()}  #requête n°10
+    # req10={"": ""}  #requête n°10
     req11={"Quels sont les titres des films notés plus de 9 sur 10 avec plus de 10 000 votes ?": query11.read()} #requête n°11
     req12={"Quelle sont les 5 comédies romantiques les mieux notées ?": query12.read()} #requête n°12
     req13={"Quels sont les 10 films d’animation ayant reçu plus de 1000 votes les mieux notés ?": query13.read()} #requête n°13
@@ -58,15 +58,14 @@ with open('requêtes/req1.sql') as query1, \
 
 # Fonction d'execution des requête:
 #on va devoir créer plusieurs variables différentes pour les résultats en tableaux ASCII car si on en créer qu'une tous les résultats apparaîtront dans le même tableau, ce que nous ne voulons pas.
-TableAscii=[]
+TableAscii=PrettyTable()#on créer une variable tableAscii avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
+TableAscii.field_names = ["titleType"]#on défini le titre du tableau ASCII comme dans le système de gestion de base de données.
 def sql1():#fonction représentant la requête n°1
     c.execute(req1["Quels sont les différents types de titres dans cette base de données ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
-        TableAscii.append(list(row))#on prend le résultat de la requête que l'on met dans un tableau ASCII
-    pretty_print(TableAscii)
-
+        TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
     root = Tk() #on créer une fenetre dans laquel va s'afficher le résultat de la requête
-    Titre = ttk.Label(root, text=str(TableAscii),font="Courier 18")#on créer une zone de texte où vas s'afficher le résultat avec une police Courier 18
+    Titre = ttk.Label(root, text=str(TableAscii),font="Courier 18")#on créer une zone de texte où vas s'afficher le résultat avec une police calibri 18
     Titre.pack()#on pack la zone de texte pour lui permettre de s'afficher sur la page 
     Close=Button(root,text="fermer la fenêtre",command=root.destroy,font="Calibri 18")
     Close.pack()
@@ -391,7 +390,6 @@ def sql21():#fonction représentant la requête n°21
     root.mainloop() #permet de lancer tout les événement de la page, soit la démarrer.
 
 
-
 #on créer la fonction afficher qui nous permet de créer l'interface avec tkinter
 def afficher():
     root = Tk() #on créer la racine de l'affichage tkinter
@@ -430,7 +428,7 @@ def afficher():
     boutton7=Button(fenetre2,text="Question 7:\n\n Quels sont les films d’Olivier Nakache ?",width=80, command=sql7, font="Calibri, 12")
     boutton8=Button(fenetre2,text="Question 8:\n\n Quel est le film ayant recueilli le plus de votes ?",width=80, command=sql8, font="Calibri, 12")
     boutton9=Button(fenetre2,text="Question 9:\n\n Qui a écrit le scénario du film Taxi sorti en 1998 ?",width=80, command=sql9, font="Calibri, 12")
-    boutton10=Button(fenetre2,text="Question 10:\n\n Quelles sont les noms et rôles (category et job) des personnes intervenant dans la production du film Return of the Jedi ?",width=95, command=sql10, font="Calibri, 12")
+    boutton10=Button(fenetre2,text="Question 10:\n\n Quelles sont les noms et rôles (category et job) des personnes intervenant dans la production du film Return of the Jedi ?",width=80, command="", font="Calibri, 12")
     boutton11=Button(fenetre2,text="Question 11:\n\n Quels sont les titres des films notés plus de 9 sur 10 avec plus de 10 000 votes ?",width=80, command=sql11, font="Calibri, 12")
     boutton12=Button(fenetre2,text="Question 12:\n\n Quelle sont les 5 comédies romantiques les mieux notées ?",width=80, command=sql12, font="Calibri, 12")
     boutton13=Button(fenetre2,text="Question 13:\n\n Quels sont les 10 films d’animation ayant reçu plus de 1000 votes les mieux notés ?",width=80, command=sql13, font="Calibri, 12")
@@ -470,5 +468,4 @@ def afficher():
     boutton21.pack(pady=10)
 
     root.mainloop() #permet de lancer tout les événement de la page, soit la démarrer.
-
 afficher()#on appel la fonction affichage pour l'executer.

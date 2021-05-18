@@ -59,11 +59,11 @@ with open('C:/Users/Elève/Documents/projetsql/requetes/requêtes/req1.sql') as 
 # Fonction d'execution des requête:
 #on va devoir créer plusieurs variables différentes pour les résultats en tableaux ASCII car si on en créer qu'une tous les résultats apparaîtront dans le même tableau, ce que nous ne voulons pas.
 TableAscii=PrettyTable()#on créer une variable tableAscii avec comme valeur PrettyTable() permettant d'afficher les tableau sous une plus belle forme, en ASCII.
-TableAscii.field_names = ["titleType"]#on défini le titre du tableau ASCII comme dans le système de gestion de base de données.
 def sql1():#fonction représentant la requête n°1
     c.execute(req1["Quels sont les différents types de titres dans cette base de données ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():#on parcour les résultats
         TableAscii.add_rows([list(row)])#on prend le résultat de la requête que l'on met dans un tableau ASCII
+    TableAscii.field_names = ["titleType"]#on défini le titre du tableau ASCII comme dans le système de gestion de base de données.
     root = Tk() #on créer une fenetre dans laquel va s'afficher le résultat de la requête
     Titre = ttk.Label(root, text=str(TableAscii),font="Courier 18")#on créer une zone de texte où vas s'afficher le résultat avec une police calibri 18
     Titre.pack()#on pack la zone de texte pour lui permettre de s'afficher sur la page 

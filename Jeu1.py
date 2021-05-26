@@ -1,5 +1,6 @@
 import pygame #Import du module pygame
 import os     #Import du module os
+import random
 
 pygame.init() #initialise les modules importé de pygame
 
@@ -19,6 +20,7 @@ FPS = 60                        #images par secondes.
 
 #création variables du jeu:
 GRAVITE = 0.75                     #création de gravité pour permettre au joueur de tomber.
+Unite = 40                     #définition d'une "Unite de mesure" du jeu.
 
 #variables de mouvements du joueur:
 bouger_gauche = False
@@ -36,8 +38,6 @@ Background = pygame.image.load('F:/Documents/projet jeu/images/background/decor.
 Rouge = (255,0,0)  #couleur de la ligne
 Vert = (0,190,30)
 Gris = (128,128,128)
-
-font = pygame.font.SysFont('Calibri',30)
 
 def draw_text(text,font,text_col,x,y):
     img = font.render(text,True,text_col)
@@ -79,6 +79,14 @@ class Personnage(pygame.sprite.Sprite):
         self.frame_index = 0                               #repère de frame d'animation.
         self.action = 0                                    #variable qui permet d'accéder aux différente animation par exemple 1 pour courir.
         self.update_delay = pygame.time.get_ticks()        #délai à laquelle se rafraichi l'animation
+        self.timer = 0                                     #création d'un timer.
+        
+        #varaible de l'IA.
+        self.immobile = False                           #variable qui défini quand l'IA est immobile.
+        self.Timer_Immobile = 0                         #variable qui défini un timer de tout les combien de temps l'IA seras immobile.
+        self.FovIA = pygame.Rect(0, 0, 200 ,20)         #on créer un champs de vision (Fov = field of view) de l'ennemi qui va servir à détecter le joueur.
+        
+        
         #importation des images du personnage:
         animation_types = ['Immobile', 'Courir', 'Sauter', 'Mort', 'Taper'] #ajouter taper pr l'animation de frapper
         for animation in animation_types:
@@ -165,12 +173,58 @@ class Personnage(pygame.sprite.Sprite):
         #permet d'attendre une certains temps avant de pouvoir récrer un projectile pour éviter d'en avoir en boucle:
         if self.frapper_cd == 0 and self.stamina > 0:        
             self.frapper_cd = 20
-            projectile = Projectile(self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery*0.9, self.direction,self.flip,self.stamina)   #créer un instance projectile centrer sur le rectangle du joueur.
+            projectile = Projectile(self.rect.centerx + (0.7 * self.rect.size[0] * self.direction), self.rect.centery*0.9, self.direction,self.flip,self.stamina)   #créer un instance projectile centrer sur le rectangle du joueur.
             projectile_group.add(projectile)    #ajoute l'instance projectile au groupe
             #Rougeuction de la stamina:
             self.stamina -= 1
             self.update_action(4)  #joue l'animation de frapper
 
+
+    def IA(self):
+        """
+        Méthode qui permet de créer des IA (ennemis qui bouge tout seul)
+        Arguments:
+            self
+        """
+        #si le joueur est vivant:
+        if self.alive and joueur.alive:
+            
+            #choisi un nombre aléatoire entre 1 et 200 pendant que l'IA est en mouvement, si le nombre est 1 l'IA deviens immobile.
+            if self.immobile == False and random.choice(range(1,200)) == 1:
+                self.immobile = True
+                self.update_action(0)                   #quand l'IA est immobile l'animation 0=immobile est appelé.
+                self.Timer_Immobile = 100
+            
+            #si l'ennemi est vivant:
+            if ennemi.vivant == True:
+                #vérifie si l'IA est proche du joueur:
+                if self.FovIA.colliderect(joueur.rect):
+                    self.update_action(4)       #4=frapper l'IA arrête de bouger et s'arrête devant le joueur.
+                    self.frapper()              #frappe 
+                else:
+                    #quand l'IA n'est pas immobile:
+                    if self.immobile == False:
+                        if self.direction == 1:                 #si il est tourné vers la droite
+                            ia_moving_right = True              #l'IA va vers la droite.
+                        else:
+                            ia_moving_right = False
+                        ia_moving_left = not ia_moving_right            #inverse de l'IA qui va vers la droite, autrement dit l'IA va vers la gauche.
+                        self.bouger(ia_moving_left, ia_moving_right)
+                        self.update_action(1)                           #quand l'IA est en mouvement l'animation 1=courir est appelé.
+                        self.timer += 1
+
+                        #le champ de vision de l'ennemi bouge en même temps que lui:
+                        self.FovIA.center = (self.rect.centerx + 75 * self.direction, self.rect.centery)
+
+                        if self.timer > Unite:
+                            self.direction *= -1
+                            self.timer *= -1
+                    else:
+                        #permet de faire en sorte que l'IA soit immobile un temps données puis reprend sa course.
+                        self.Timer_Immobile -= 1
+                        if self.Timer_Immobile <= 0:
+                            self.immobile = False
+                    
 
     def rafraichissement_animation(self):
         """
@@ -222,20 +276,27 @@ class Personnage(pygame.sprite.Sprite):
             self.vivant = False
             self.update_action(3)  #joue l'animation de mort.
 
-        #si le joueur tue un ennemi il récupère 4pv et 4 de stamina:
-        if ennemi.PV == 0:
-            joueur.stamina +=4
-            joueur.PV += 4   
-            ennemi.PV += 0.1
-        
-        #permet de ne pas faire déborder la bar de stamina:     
-        if joueur.stamina > joueur.start_stamina:
-            joueur.stamina = joueur.start_stamina
-        
-        #permet de ne pas faire déborder la bar de vie:
-        if joueur.PV > joueur.PV_max:
-            joueur.PV = joueur.PV_max
+
+        #si le joueur est vivant:
+        if joueur.vivant:
+            #quand le timer atteind un certains nombre la stamina remonte
+            self.timer += 1
+            if self.timer > Unite*3:
+                joueur.stamina += 1
+                joueur.PV += 5
+                self.timer *= -1
+
+            #permet de ne pas faire déborder la bar de stamina:     
+            if joueur.stamina > joueur.start_stamina:
+                joueur.stamina = joueur.start_stamina
+
+            #permet de ne pas faire déborder la bar de vie:
+            if joueur.PV > joueur.PV_max:
+                joueur.PV = joueur.PV_max
             
+        else:
+            joueur.stamina = 0  #la bar de stamina du jouer tombe à 0 quand il meurt.
+
 
     def apparition(self):
         """
@@ -347,30 +408,37 @@ class Projectile(pygame.sprite.Sprite):
         #vérifie les collisions entre les personnages:
         if pygame.sprite.spritecollide(joueur, projectile_group, False):
             if joueur.vivant:
-                joueur.PV -= 5
-                self.kill()   #supprime le projectiles.
-        if pygame.sprite.spritecollide(ennemi, projectile_group, False):
-            if ennemi.vivant:
-                ennemi.PV -= 25
-                print(ennemi.PV)
-                self.kill()   #supprime le projectiles.
+                joueur.PV -= 10
+                self.kill()         #supprime le projectiles.
+        
+        for ennemi in ennemies_group:
+            if pygame.sprite.spritecollide(ennemi, projectile_group, False):
+                if ennemi.vivant:
+                    ennemi.PV -= 25
+                    self.kill()     #supprime le projectiles.
 
 
 
-#création d'un groupe de sprites:
+#création des groupes de sprites:
+ennemies_group = pygame.sprite.Group()
 projectile_group = pygame.sprite.Group()
 
 
 
-#création du joueur:
-joueur = Personnage('personnages',200,200,3/2,5,20)
+#création du joueur et de ses bars de vie et stamina:
+joueur = Personnage('personnages',200,200,1,5,20)
 BarDeStamina = BarDeStamina(10,600, joueur.stamina, joueur.stamina)
 BarDeVie = BarDeVie(320,600, joueur.PV, joueur.PV)
-ennemi = Personnage('ennemies',400,200,3/2,5,20)
+
+#création des ennemis:
+ennemi = Personnage('ennemies',600,200,1,2,20)
+ennemi2 = Personnage('ennemies',400,200,1,2,20)
+ennemies_group.add(ennemi)
+ennemies_group.add(ennemi2)
 
 
 run = True
-while run: #Boucle contenant les différent événement de la fenêter pendant qu'elle est en route.
+while run: #Boucle contenant les différent événement de la fenêtre pendant qu'elle est en route.
 
     clock.tick(FPS)
 
@@ -382,8 +450,10 @@ while run: #Boucle contenant les différent événement de la fenêter pendant q
     joueur.update()
     joueur.apparition()
     
-    ennemi.update()
-    ennemi.apparition()
+    for ennemi in ennemies_group:
+        ennemi.IA()
+        ennemi.update()
+        ennemi.apparition()
 
     #update et groupes de dessin:
     projectile_group.update()

@@ -6,7 +6,7 @@ pygame.init() #initialise les modules importé de pygame
 
 
 
-Largeur_fenetre = 800                      #Variable largeur de la fenetre
+Largeur_fenetre = 1200                     #Variable largeur de la fenetre
 hauteur_fenetre = int(Largeur_fenetre*0.8) #variable hauteur de la fenetre
 
 fenetre = pygame.display.set_mode((Largeur_fenetre, hauteur_fenetre)) #Création de la fenêtre.
@@ -34,21 +34,38 @@ projectile_img1 = pygame.image.load('images/attaque/vent1.png').convert_alpha()
 
 
 #couleurs:
-Background = pygame.image.load('images/background/decor.png')       #couleurs d'arrière plan.
+Background = pygame.image.load('F:/Documents/projet jeu/images/background/decor.png')       #couleurs d'arrière plan.
 Rouge = (255,0,0)  #couleur de la ligne
 Vert = (0,190,30)
 Gris = (128,128,128)
 
-def draw_text(text,font,text_col,x,y):
-    img = font.render(text,True,text_col)
+
+font = pygame.font.SysFont('Times new roman', 30)
+
+def draw_text(text,font,text_couleur,x,y):
+    """
+    Fonction permettant d'ajouter du text
+    Arguments: 
+        text: str du text à afficher
+        font: str de la police d'écriture à utiliser
+        text_couleur: la couleur du texte
+        x: int de la position du texte sur l'axe x
+        y: int de la position du texte sur l'axe y
+    """    
+    img = font.render(text,True,text_couleur)
     fenetre.blit(img,(x,y))
 
 
 
 #fonction qui colore l'arrière plan:
 def draw_Background():
-    fenetre.blit(Background, (0,46))
-    pygame.draw.line(fenetre,Rouge,(0,300), (Largeur_fenetre,300)) #ligne rouge (substitue de sol pour le moment)
+    """
+    Fonction permettant d'ajouter un arrière-plan.
+    Arguments: 
+        aucun
+    """
+    fenetre.blit(Background, (0,296))
+    pygame.draw.line(fenetre,Gris,(0,550), (Largeur_fenetre,550)) #ligne rouge (substitue de sol pour le moment)
 
 #Classe permettant de créer de spersonnages:
 class Personnage(pygame.sprite.Sprite):
@@ -84,7 +101,7 @@ class Personnage(pygame.sprite.Sprite):
         #varaible de l'IA.
         self.immobile = False                           #variable qui défini quand l'IA est immobile.
         self.Timer_Immobile = 0                         #variable qui défini un timer de tout les combien de temps l'IA seras immobile.
-        self.FovIA = pygame.Rect(0, 0, 200 ,20)         #on créer un champs de vision (Fov = field of view) de l'ennemi qui va servir à détecter le joueur.
+        self.FovIA = pygame.Rect(0, 0, 300 ,20)         #on créer un champs de vision (Fov = field of view) de l'ennemi qui va servir à détecter le joueur.
         
         
         #importation des images du personnage:
@@ -154,9 +171,9 @@ class Personnage(pygame.sprite.Sprite):
         dy += self.mvt_y
 
         #vérifie les collision avec le sol:
-        if self.rect.bottom + dy > 300:
-            dy = 300 - self.rect.bottom
-            self.in_air = False
+        if self.rect.bottom + dy > 550:
+            dy = 550 - self.rect.bottom
+            self.in_air = False 
 
         #update de la position du rectangle:
         self.rect.x += dx                       #mouvement du rectangles sur l'axe x.
@@ -173,7 +190,7 @@ class Personnage(pygame.sprite.Sprite):
         #permet d'attendre une certains temps avant de pouvoir récrer un projectile pour éviter d'en avoir en boucle:
         if self.frapper_cd == 0 and self.stamina > 0:        
             self.frapper_cd = 20
-            projectile = Projectile(self.rect.centerx + (0.7 * self.rect.size[0] * self.direction), self.rect.centery*0.9, self.direction,self.flip,self.stamina)   #créer un instance projectile centrer sur le rectangle du joueur.
+            projectile = Projectile(self.rect.centerx + (0.7 * self.rect.size[0] * self.direction), self.rect.centery, self.direction,self.flip,self.stamina)   #créer un instance projectile centrer sur le rectangle du joueur.
             projectile_group.add(projectile)    #ajoute l'instance projectile au groupe
             #Rougeuction de la stamina:
             self.stamina -= 1
@@ -196,7 +213,7 @@ class Personnage(pygame.sprite.Sprite):
                 self.Timer_Immobile = 100
             
             #si l'ennemi est vivant:
-            if ennemi.vivant == True:
+            if ennemi.vivant == True and joueur.vivant == True:
                 #vérifie si l'IA est proche du joueur:
                 if self.FovIA.colliderect(joueur.rect):
                     self.update_action(4)       #4=frapper l'IA arrête de bouger et s'arrête devant le joueur.
@@ -224,7 +241,9 @@ class Personnage(pygame.sprite.Sprite):
                         self.Timer_Immobile -= 1
                         if self.Timer_Immobile <= 0:
                             self.immobile = False
-                    
+            
+            if joueur.vivant == False:
+                ennemi.update_action(0)       #les ennemies prennent un position immobile quand le joueur est mort.
 
     def rafraichissement_animation(self):
         """
@@ -296,6 +315,7 @@ class Personnage(pygame.sprite.Sprite):
             
         else:
             joueur.stamina = 0  #la bar de stamina du jouer tombe à 0 quand il meurt.
+            joueur.kill()
 
 
     def apparition(self):
@@ -333,8 +353,9 @@ class BarDeVie():
         """
         self.PV = PV
         ratio = self.PV / self.PV_max                                       #le ratio représente la vie divisé par la vie maximal ce qui va permettre de réduire la taille de la bar de vie au fur et a mesure que l'on prend des dégats.
-        pygame.draw.rect(fenetre, Gris, (self.x, self.y, 200, 20))          #on dessine une bar grise.
-        pygame.draw.rect(fenetre, Rouge, (self.x, self.y, 200*ratio, 20))     #on dessine une bar rouge par dessus la bar grise, comme ça dès que la vie va baisser on verras la bar grise apparaitre au fur et à mesure.
+        pygame.draw.rect(fenetre, Gris, (self.x, self.y, 400, 20))          #on dessine une bar grise.
+        pygame.draw.rect(fenetre, Rouge, (self.x, self.y, 400*ratio, 20))     #on dessine une bar rouge par dessus la bar grise, comme ça dès que la vie va baisser on verras la bar grise apparaitre au fur et à mesure.
+        draw_text('Point De Vie', font, Rouge, self.x+100, self.y+50)
 
 
 
@@ -363,8 +384,9 @@ class BarDeStamina():
         """
         self.stamina = stamina
         ratio = self.stamina / self.stamina_max                             #le ratio représente la stamina divisé par la stamina maximal ce qui va permettre de réduire la taille de la bar de stamina au fur et a mesure que l'on en perd.
-        pygame.draw.rect(fenetre, Gris, (self.x, self.y, 200, 20))          #on dessine une bar grise.
-        pygame.draw.rect(fenetre, Vert, (self.x, self.y, 200*ratio, 20))   #on dessine une bar verte par dessus la bar grise, comme ça au fur et à mesure que la stamina va baisser on verras apparaitre la bar grise. 
+        pygame.draw.rect(fenetre, Gris, (self.x, self.y, 400, 20))          #on dessine une bar grise.
+        pygame.draw.rect(fenetre, Vert, (self.x, self.y, 400*ratio, 20))   #on dessine une bar verte par dessus la bar grise, comme ça au fur et à mesure que la stamina va baisser on verras apparaitre la bar grise. 
+        draw_text('stamina', font, Vert, self.x+100, self.y+50)
 
 
 
@@ -402,7 +424,7 @@ class Projectile(pygame.sprite.Sprite):
         #faire bouger le projectile:
         self.rect.x += (self.direction * self.speed)
         #vérifie si le projectile à quitter l'écran:
-        if self.rect.right < 0 or self.rect.left > Largeur_fenetre:
+        if self.rect.right < 0 or self.rect.left > Largeur_fenetre-100:
             self.kill()
 
         #vérifie les collisions entre les personnages:
@@ -426,15 +448,17 @@ projectile_group = pygame.sprite.Group()
 
 
 #création du joueur et de ses bars de vie et stamina:
-joueur = Personnage('personnages',200,200,1,5,20)
-BarDeStamina = BarDeStamina(10,600, joueur.stamina, joueur.stamina)
-BarDeVie = BarDeVie(320,600, joueur.PV, joueur.PV)
+joueur = Personnage('personnages',200,400,1,5,20)
+BarDeStamina = BarDeStamina(10,700, joueur.stamina, joueur.stamina)
+BarDeVie = BarDeVie(540,700, joueur.PV, joueur.PV)
 
 #création des ennemis:
-ennemi = Personnage('ennemies',600,200,1,2,20)
-ennemi2 = Personnage('ennemies',400,200,1,2,20)
+ennemi = Personnage('ennemies',400,450,1,2,20)
+ennemi2 = Personnage('ennemies',600,450,1,2,20)
+ennemi3 = Personnage('ennemies',800,450,1,2,20)
 ennemies_group.add(ennemi)
 ennemies_group.add(ennemi2)
+ennemies_group.add(ennemi3)
 
 
 run = True

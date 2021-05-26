@@ -34,7 +34,7 @@ projectile_img1 = pygame.image.load('images/attaque/vent1.png').convert_alpha()
 
 
 #couleurs:
-Background = pygame.image.load('F:/Documents/projet jeu/images/background/decor.png')       #couleurs d'arrière plan.
+Background = pygame.image.load('images/background/decor.png')       #couleurs d'arrière plan.
 Rouge = (255,0,0)  #couleur de la ligne
 Vert = (0,190,30)
 Gris = (128,128,128)

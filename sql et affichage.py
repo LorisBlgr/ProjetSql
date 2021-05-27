@@ -100,7 +100,11 @@ def sql1():
 
 TableAscii1=[]#On créer une liste vide qui va servir à accueillir les résultats de la requêtes.
 def sql2():
-
+    """
+    Fonction permettant d'executer la requête sql n°6.
+    Arguments:
+        aucun
+    """
     c.execute(req2["Combien y a-t-il de titres dans cette base de données ?"])#on execute la requête sql en utilisant sa clé dans le dictionnaire
     for row in c.fetchall():                                                  #on parcour les résultats
         TableAscii1.append(list(row))                                         #on prend le résultat de la requête que l'on met dans un tableau ASCII

@@ -10,6 +10,8 @@ Programmation des lignes 33 à 70, lignes 121 à 136, lignes 538 à 569.
 
 On n'a pas pu faire tout ce que l'on voulait car on ne savait pas comment. Par exemple on voulait faire un niveau plus développer
 avec des platformes etc. En faisant plusieurs recherche on n'a pas trouvé de moyens simple de le faire.
+Les commentaires explicatifs juste à côté des lignes de codes m'on servit de repères pour éviter de me perdre
+et oublié ce que font certaines fonctions, au fur et à mesure que j'avance dans le programme.
 
 
 Difficulter rencontré:

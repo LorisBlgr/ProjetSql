@@ -101,7 +101,7 @@ def sql1():
 TableAscii1=[]#On créer une liste vide qui va servir à accueillir les résultats de la requêtes.
 def sql2():
     """
-    Fonction permettant d'executer la requête sql n°6.
+    Fonction permettant d'executer la requête sql n°2.
     Arguments:
         aucun
     """
@@ -541,6 +541,11 @@ def sql21():
 
 #on créer la fonction afficher qui nous permet de créer l'interface avec tkinter
 def afficher():
+    """
+    Fonction permettant d'afficher la fenêtre tkinter avec tout ce qu'il y a dedans.
+    Arguments:
+        aucun
+    """
     root = Tk() #on créer la racine de l'affichage tkinter
     root.geometry("1000x600")#on défini la taille de la page
     #on créer la fenêtre principal
